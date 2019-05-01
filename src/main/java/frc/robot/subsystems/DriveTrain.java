@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.BasicTeleop;
 
 /**
  * Add your docs here.
@@ -20,7 +21,7 @@ import frc.robot.RobotMap;
 public class DriveTrain extends Subsystem {
 
   //right motors
-  public WPI_TalonSRX rl = new WPI_TalonSRX(RobotMap.rl);
+  WPI_TalonSRX rl = new WPI_TalonSRX(RobotMap.rl);
   WPI_TalonSRX rf1 = new WPI_TalonSRX(RobotMap.rf1);
   WPI_TalonSRX rf2 = new WPI_TalonSRX(RobotMap.rf2);
 
@@ -60,8 +61,38 @@ public class DriveTrain extends Subsystem {
     ll.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
   }
 
+  //method to stop motors
+  public void stop(){
+    rl.set(0);
+    ll.set(0);
+  }
+
+  //method to stop just the right motors
+  public void stopRight(){
+    rl.set(0);
+  }
+
+  //method to stop just the left motors
+  public void stopLeft(){
+    ll.set(0);
+  }
+
+  //method to make right side go
+  public void makeRightGo(double rightPower){
+     
+    rl.set(rightPower);
+  }
+
+  //method to make left side go
+  public void makeLeftGo(double leftPower){
+
+    ll.set(leftPower);
+  }
+
   @Override
   public void initDefaultCommand() {
+
+    setDefaultCommand(new BasicTeleop());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
