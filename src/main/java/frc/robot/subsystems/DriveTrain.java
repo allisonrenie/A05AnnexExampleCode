@@ -20,7 +20,7 @@ import frc.robot.RobotMap;
 public class DriveTrain extends Subsystem {
 
   //right motors
-  WPI_TalonSRX rl = new WPI_TalonSRX(RobotMap.rl);
+  public WPI_TalonSRX rl = new WPI_TalonSRX(RobotMap.rl);
   WPI_TalonSRX rf1 = new WPI_TalonSRX(RobotMap.rf1);
   WPI_TalonSRX rf2 = new WPI_TalonSRX(RobotMap.rf2);
 
