@@ -18,8 +18,8 @@ public class EncoderTeleop extends Command {
   double currentRate;
 
   //figure out ports!!!
-  Encoder rightEncoder = new Encoder(RobotMap.rightEncoder, 2, false, Encoder.EncodingType.k4X);
-  Encoder leftEncoder = new Encoder(RobotMap.leftEncoder, 2, false, Encoder.EncodingType.k4X);
+  // Encoder rightEncoder = new Encoder(RobotMap.rightEncoder, 2, false, Encoder.EncodingType.k4X);
+  // Encoder leftEncoder = new Encoder(RobotMap.leftEncoder, 2, false, Encoder.EncodingType.k4X);
 
   public EncoderTeleop() {
     super();
@@ -31,18 +31,20 @@ public class EncoderTeleop extends Command {
   protected void initialize() {
     isFinished = false;
 
-    //configuring encoders
-    rightEncoder.setMaxPeriod(.1);
-    rightEncoder.setMinRate(10);
-    rightEncoder.setDistancePerPulse(5);
-    rightEncoder.setReverseDirection(true);
-    rightEncoder.setSamplesToAverage(7);
     
-    leftEncoder.setMaxPeriod(.1);
-    leftEncoder.setMinRate(10);
-    leftEncoder.setDistancePerPulse(5);
-    leftEncoder.setReverseDirection(true);
-    leftEncoder.setSamplesToAverage(7);
+
+    //configuring encoders
+    // rightEncoder.setMaxPeriod(.1);
+    // rightEncoder.setMinRate(10);
+    // rightEncoder.setDistancePerPulse(5);
+    // rightEncoder.setReverseDirection(true);
+    // rightEncoder.setSamplesToAverage(7);
+    
+    // leftEncoder.setMaxPeriod(.1);
+    // leftEncoder.setMinRate(10);
+    // leftEncoder.setDistancePerPulse(5);
+    // leftEncoder.setReverseDirection(true);
+    // leftEncoder.setSamplesToAverage(7);
 
   }
 
