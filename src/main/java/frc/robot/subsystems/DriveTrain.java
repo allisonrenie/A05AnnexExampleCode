@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.BasicTeleop;
 
@@ -30,6 +31,8 @@ public class DriveTrain extends Subsystem {
   WPI_TalonSRX ll = new WPI_TalonSRX(RobotMap.ll);
   WPI_TalonSRX lf1 = new WPI_TalonSRX(RobotMap.lf1);
   WPI_TalonSRX lf2 = new WPI_TalonSRX(RobotMap.lf2);
+
+  
 
   public DriveTrain(){
 
@@ -58,8 +61,8 @@ public class DriveTrain extends Subsystem {
     lf2.setInverted(InvertType.FollowMaster);
 
     //adding encoders
-    // rl.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    // ll.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    rl.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    ll.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     //getselectedsensor
   }
 
@@ -89,6 +92,18 @@ public class DriveTrain extends Subsystem {
   public void makeLeftGo(double leftPower){
 
     ll.set(leftPower);
+  }
+
+  public int getRightEnc(){
+    int rightEnc = rl.getSelectedSensorPosition();
+    SmartDashboard.putString("DB/String 0", Integer.toString(rightEnc));
+    return rightEnc;
+  }
+  
+  public int getLeftEnc(){
+    int leftEnc = ll.getSelectedSensorPosition();
+    SmartDashboard.putString("DB/String 1", Integer.toString(leftEnc));
+    return leftEnc;
   }
 
   @Override
