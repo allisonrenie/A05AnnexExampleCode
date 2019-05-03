@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -22,8 +23,8 @@ public class DriveTrain extends Subsystem {
 
   //right motors
   WPI_TalonSRX rl = new WPI_TalonSRX(RobotMap.rl);
-  WPI_TalonSRX rf1 = new WPI_TalonSRX(RobotMap.rf1);
-  WPI_TalonSRX rf2 = new WPI_TalonSRX(RobotMap.rf2);
+  WPI_VictorSPX rf1 = new WPI_VictorSPX(RobotMap.rf1);
+  WPI_VictorSPX rf2 = new WPI_VictorSPX(RobotMap.rf2);
 
   //left motors
   WPI_TalonSRX ll = new WPI_TalonSRX(RobotMap.ll);
@@ -57,8 +58,9 @@ public class DriveTrain extends Subsystem {
     lf2.setInverted(InvertType.FollowMaster);
 
     //adding encoders
-    rl.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    ll.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    // rl.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    // ll.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    //getselectedsensor
   }
 
   //method to stop motors

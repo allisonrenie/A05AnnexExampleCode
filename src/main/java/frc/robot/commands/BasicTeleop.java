@@ -34,8 +34,8 @@ public class BasicTeleop extends Command {
 
     //setting the values of the Y axises of both the joysticks equal to variables
     //may have to change to negative to make it work right
-    double right = xbox.getY(Hand.kRight);
-    double left = xbox.getY(Hand.kLeft);
+    double right = (-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight));
+    double left = (-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft));
 
     //making the robot move by making the left and right motor powers
     Robot.driveTrain.makeRightGo(right);
