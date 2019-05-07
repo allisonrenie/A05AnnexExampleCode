@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.BasicTeleop;
+import frc.robot.commands.EncoderTeleop;
 
 /**
  * Add your docs here.
@@ -23,12 +24,12 @@ import frc.robot.commands.BasicTeleop;
 public class DriveTrain extends Subsystem {
 
   //right motors
-  WPI_TalonSRX rl = new WPI_TalonSRX(RobotMap.rl);
+  public WPI_TalonSRX rl = new WPI_TalonSRX(RobotMap.rl);
   WPI_VictorSPX rf1 = new WPI_VictorSPX(RobotMap.rf1);
   WPI_VictorSPX rf2 = new WPI_VictorSPX(RobotMap.rf2);
 
   //left motors
-  WPI_TalonSRX ll = new WPI_TalonSRX(RobotMap.ll);
+  public WPI_TalonSRX ll = new WPI_TalonSRX(RobotMap.ll);
   WPI_TalonSRX lf1 = new WPI_TalonSRX(RobotMap.lf1);
   WPI_TalonSRX lf2 = new WPI_TalonSRX(RobotMap.lf2);
 
@@ -84,13 +85,13 @@ public class DriveTrain extends Subsystem {
 
   //method to make right side go
   public void makeRightGo(double rightPower){
-     
+    SmartDashboard.putString("DB/String 3", Integer.toString(getRightVelocity())); 
     rl.set(rightPower);
   }
 
   //method to make left side go
   public void makeLeftGo(double leftPower){
-
+    SmartDashboard.putString("DB/String 4", Integer.toString(getLeftVelocity()));
     ll.set(leftPower);
   }
 
@@ -106,11 +107,20 @@ public class DriveTrain extends Subsystem {
     return leftEnc;
   }
 
+  public int getRightVelocity(){
+    //in encoder counts per 100ms
+    return rl.getSelectedSensorVelocity();
+  }
+
+  public int getLeftVelocity(){
+    return ll.getSelectedSensorVelocity();
+  }
+
+  //USE THIS TO CHANGE WHAT TELEOP IS GOING
+  //this is the default teleop command
   @Override
   public void initDefaultCommand() {
 
-    setDefaultCommand(new BasicTeleop());
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new EncoderTeleop());
   }
 }

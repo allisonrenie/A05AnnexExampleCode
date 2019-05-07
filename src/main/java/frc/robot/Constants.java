@@ -15,4 +15,7 @@ public class Constants {
     //here we will put constants that we want to be able to use elsewhere in our program
     //this provides a place to easily change numbers so they are labeled and clear
 
+    // ENCODER TELEOP VALUES
+    
+
 }
