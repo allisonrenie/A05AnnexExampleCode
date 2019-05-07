@@ -7,15 +7,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
 public class EncoderTeleop extends Command {
+  
+  double rightIntegral;
+  double leftIntegral;
   
   private boolean isFinished;
 
@@ -28,39 +29,65 @@ public class EncoderTeleop extends Command {
   @Override
   protected void initialize() {
     isFinished = false;
+    //resetting my integral when the program starts
+    rightIntegral = 0;
+    leftIntegral = 0;
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
+    //get joystick
     XboxController xbox = Robot.m_oi.getXbox();
 
+    //getting the position of the joysticks on the y axis
+    //this is a value from -1 to 1
     double right = (-xbox.getY(Hand.kRight));
     double left = (-xbox.getY(Hand.kLeft));
 
-    //we want these to be the velocity, not just joystick position
-    //mult by whatever number the velocity is compared to the joystick value
-    //5 is not real number
-    //left is 236 -- 188
-    //right is 248 -- 198
+    //this is the velocity determined by the joystick input. 
+    //188 and 198 are close to the robot's max speed.
     double rightDesiredVelocity = right * 188;
     double leftDesiredVelocity = left * 198;
-     SmartDashboard.putString("DB/String 5", Double.toString(rightDesiredVelocity));
+
+    //printing stuff to dashboard
+    SmartDashboard.putString("DB/String 5", Double.toString(rightDesiredVelocity));
     SmartDashboard.putString("DB/String 6", Double.toString(leftDesiredVelocity));
     System.out.println("Right des" + rightDesiredVelocity);
     System.out.println("Left des" + leftDesiredVelocity);
      
-
+    //getting current velocity from our motorcontrollers
+    //in encoder counts per 100ms
     double rightCurrentVelocity = Robot.driveTrain.getRightVelocity();
     double leftCurrentVelocity = Robot.driveTrain.getLeftVelocity();
     
-    double p1 = (rightDesiredVelocity - rightCurrentVelocity) * .005;
-    double p2 = (leftDesiredVelocity - leftCurrentVelocity) * .005;
+    //getting errors
+    double rightError = rightDesiredVelocity - rightCurrentVelocity;
+    double leftError = leftDesiredVelocity - leftCurrentVelocity;
 
-    //now we have the p in the pid loop. will prolly add in integral next.
-    Robot.driveTrain.makeRightGo(right + p1);
-    Robot.driveTrain.makeLeftGo(left + p2);
+    //proportional
+    double p1 = rightError * .001;
+    double p2 = leftError * .001;
+
+    //integral
+    //adds right and left errors to their respective integrals every time around
+    rightIntegral += (rightError) * .00075;
+    leftIntegral += (leftError) * .00075;
+
+    //printing integral to dashboard
+    SmartDashboard.putString("DB/String 7", Double.toString(rightIntegral));
+    SmartDashboard.putString("DB/String 8", Double.toString(leftIntegral));
+
+    //if one side has more error than the other
+    //more power added to more error side, power taken from less error side
+    double correction = (rightError - leftError) * .001;
+
+    //giving the power to the motors
+    //have basic joystick position power, plus p, i, and side-based correction
+    Robot.driveTrain.makeRightGo(right + p1 + rightIntegral + correction);
+    Robot.driveTrain.makeLeftGo(left + p2 + leftIntegral - correction);
   }
 
   // Make this return true when this Command no longer needs to run execute()
