@@ -15,7 +15,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.BasicTeleop;
 import frc.robot.commands.EncoderTeleop;
 
 /**
@@ -73,6 +72,11 @@ public class DriveTrain extends Subsystem {
     ll.set(0);
   }
 
+  public void go(double motorPower){
+    rl.set(motorPower);
+    ll.set(motorPower);
+  }
+
   //method to stop just the right motors
   public void stopRight(){
     rl.set(0);
@@ -97,13 +101,11 @@ public class DriveTrain extends Subsystem {
 
   public int getRightEnc(){
     int rightEnc = rl.getSelectedSensorPosition();
-    SmartDashboard.putString("DB/String 0", Integer.toString(rightEnc));
     return rightEnc;
   }
   
   public int getLeftEnc(){
     int leftEnc = ll.getSelectedSensorPosition();
-    SmartDashboard.putString("DB/String 1", Integer.toString(leftEnc));
     return leftEnc;
   }
 

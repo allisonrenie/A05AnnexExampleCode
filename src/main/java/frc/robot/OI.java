@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.Calibrator;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,9 +20,21 @@ public class OI {
   //creating a xbox controller
   private final XboxController xbox = new XboxController(0);
 
+  //making xbox controller buttons
+  private final JoystickButton xboxA = new JoystickButton(xbox, 1);
+  private final JoystickButton xboxB = new JoystickButton(xbox, 2);
+  private final JoystickButton xboxX = new JoystickButton(xbox, 3);
+  private final JoystickButton xboxY = new JoystickButton(xbox, 4);
+
   //making a method that allows us to call the xbox from other parts of the program
   public XboxController getXbox(){
     return(xbox);
+  }
+
+  public OI(){
+
+    xboxA.whenPressed(new Calibrator());
+
   }
 
 

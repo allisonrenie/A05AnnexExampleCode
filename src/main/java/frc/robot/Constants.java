@@ -22,4 +22,8 @@ public class Constants {
     public static final double INTEGRAL_CONSTANT = .00075;
     public static final double CORRECTION_CONSTANT = .00075;
 
+    //CALIBRATOR VALUES
+    //change this to test different value's base inaccuracy
+    public static final double MOTOR_POWER = 0.1;
+
 }
