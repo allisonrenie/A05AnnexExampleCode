@@ -11,12 +11,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class EncoderTeleop extends Command {
   
   double rightIntegral;
   double leftIntegral;
+  double useRight;
+  double useLeft;
   
   private boolean isFinished;
 
@@ -29,6 +32,7 @@ public class EncoderTeleop extends Command {
   @Override
   protected void initialize() {
     isFinished = false;
+
     //resetting my integral when the program starts
     rightIntegral = 0;
     leftIntegral = 0;
@@ -44,13 +48,44 @@ public class EncoderTeleop extends Command {
 
     //getting the position of the joysticks on the y axis
     //this is a value from -1 to 1
-    double right = (-xbox.getY(Hand.kRight));
-    double left = (-xbox.getY(Hand.kLeft));
+    //cubed 
+    double right = ((-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight)));
+    double left = ((-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft)));
+
+    //adding right deadband
+    if(right < Constants.DEADBAND){
+      useRight = 0;
+    }
+    else{
+      useRight = (right - Constants.DEADBAND) / Constants.DEADBAND_DIVISION;
+    }
+
+    if(right < .4 && right > - Constants.DEADBAND){
+      useRight = 0;
+    }
+    else{
+      useRight = (right + Constants.DEADBAND) / -Constants.DEADBAND_DIVISION;
+    }
+
+    //adding left deadband
+    if(left < Constants.DEADBAND){
+      useLeft = 0;
+    }
+    else{
+      useLeft = (left - Constants.DEADBAND) / Constants.DEADBAND_DIVISION;
+    }
+
+    if(left < Constants.DEADBAND && left > -Constants.DEADBAND){
+      useLeft = 0;
+    }
+    else{
+      useLeft = (left + Constants.DEADBAND) / -Constants.DEADBAND_DIVISION;
+    }
 
     //this is the velocity determined by the joystick input. 
     //188 and 198 are close to the robot's max speed.
-    double rightDesiredVelocity = right * 188;
-    double leftDesiredVelocity = left * 198;
+    double rightDesiredVelocity = useRight * 188;
+    double leftDesiredVelocity = useLeft * 198;
 
     //printing stuff to dashboard
     SmartDashboard.putString("DB/String 5", Double.toString(rightDesiredVelocity));
@@ -68,13 +103,13 @@ public class EncoderTeleop extends Command {
     double leftError = leftDesiredVelocity - leftCurrentVelocity;
 
     //proportional
-    double p1 = rightError * .001;
-    double p2 = leftError * .001;
+    double p1 = rightError * Constants.PROPORTIONAL_CONSTANT;
+    double p2 = leftError * Constants.PROPORTIONAL_CONSTANT;
 
     //integral
     //adds right and left errors to their respective integrals every time around
-    rightIntegral += (rightError) * .00075;
-    leftIntegral += (leftError) * .00075;
+    rightIntegral += (rightError) * Constants.INTEGRAL_CONSTANT;
+    leftIntegral += (leftError) * Constants.INTEGRAL_CONSTANT;
 
     //printing integral to dashboard
     SmartDashboard.putString("DB/String 7", Double.toString(rightIntegral));
@@ -82,12 +117,14 @@ public class EncoderTeleop extends Command {
 
     //if one side has more error than the other
     //more power added to more error side, power taken from less error side
-    double correction = (rightError - leftError) * .001;
+    double correction = (rightError - leftError) * Constants.CORRECTION_CONSTANT;
 
     //giving the power to the motors
     //have basic joystick position power, plus p, i, and side-based correction
-    Robot.driveTrain.makeRightGo(right + p1 + rightIntegral + correction);
-    Robot.driveTrain.makeLeftGo(left + p2 + leftIntegral - correction);
+    //Robot.driveTrain.makeRightGo(((right) * (right) * (right)) + p1 + rightIntegral + correction);
+    //Robot.driveTrain.makeLeftGo(((left) * (left) * (left)) + p2 + leftIntegral - correction);
+    Robot.driveTrain.makeRightGo((useRight)+ p1 + rightIntegral + correction);
+    Robot.driveTrain.makeLeftGo((useLeft) + p2 + leftIntegral - correction);
   }
 
   // Make this return true when this Command no longer needs to run execute()
