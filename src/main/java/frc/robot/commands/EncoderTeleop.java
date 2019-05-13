@@ -49,8 +49,8 @@ public class EncoderTeleop extends Command {
     //getting the position of the joysticks on the y axis
     //this is a value from -1 to 1
     //cubed 
-    double right = ((-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight)));
-    double left = ((-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft)));
+    double right = -((-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight)) * (-xbox.getY(Hand.kRight)));
+    double left = -((-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft)) * (-xbox.getY(Hand.kLeft)));
 
     //adding right deadband
     if(right < Constants.DEADBAND){
