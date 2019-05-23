@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.Calibrator;
+import frc.robot.commands.EncoderAuto;
+import frc.robot.commands.EncoderAutoNoPID;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -33,7 +35,7 @@ public class OI {
 
   public OI(){
 
-    xboxA.whenPressed(new Calibrator());
+    xboxA.whenPressed(new EncoderAutoNoPID());
 
   }
 

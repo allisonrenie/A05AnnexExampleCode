@@ -14,16 +14,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class EncoderTeleop extends Command {
+public class EncoderTeleopArcade extends Command {
   
   double rightIntegral;
   double leftIntegral;
-  double useRight;
-  double useLeft;
+  double useForward;
+  double useTurn;
   
   private boolean isFinished;
 
-  public EncoderTeleop() {
+  public EncoderTeleopArcade() {
     super();
     requires(Robot.driveTrain);
   }
@@ -49,46 +49,46 @@ public class EncoderTeleop extends Command {
     //getting the position of the joysticks on the y axis
     //this is a value from -1 to 1
     //cubed 
-    double right = -(-xbox.getY(Hand.kRight));
-    double left = -(-xbox.getY(Hand.kLeft));
+    double forward = -(-xbox.getY(Hand.kRight));
+    double turn = -(-xbox.getX(Hand.kRight));
 
     //adding right deadband
-    if(right < Constants.DEADBAND){
-      useRight = 0;
+    if(forward < Constants.DEADBAND){
+      useForward = 0;
     }
     else{
-      useRight = (right - Constants.DEADBAND) / Constants.DEADBAND_DIVISION;
+      useForward = (forward - Constants.DEADBAND) / Constants.DEADBAND_DIVISION;
     }
 
-    if(right < .4 && right > - Constants.DEADBAND){
-      useRight = 0;
+    if(forward < .4 && forward > - Constants.DEADBAND){
+      useForward = 0;
     }
     else{
-      useRight = (right + Constants.DEADBAND) / -Constants.DEADBAND_DIVISION;
+      useForward = (forward + Constants.DEADBAND) / -Constants.DEADBAND_DIVISION;
     }
 
     //adding left deadband
-    if(left < Constants.DEADBAND){
-      useLeft = 0;
+    if(turn < Constants.DEADBAND){
+      useTurn = 0;
     }
     else{
-      useLeft = (left - Constants.DEADBAND) / Constants.DEADBAND_DIVISION;
+      useTurn = (turn - Constants.DEADBAND) / Constants.DEADBAND_DIVISION;
     }
 
-    if(left < Constants.DEADBAND && left > -Constants.DEADBAND){
-      useLeft = 0;
+    if(turn < Constants.DEADBAND && turn > -Constants.DEADBAND){
+      useTurn = 0;
     }
     else{
-      useLeft = (left + Constants.DEADBAND) / -Constants.DEADBAND_DIVISION;
+      useTurn = (turn + Constants.DEADBAND) / -Constants.DEADBAND_DIVISION;
     }
 
-    double useRightAdj = useRight * useRight * useRight;
-    double useLeftAdj = useLeft * useLeft * useLeft;
+    double useForwardAdj = useForward * useForward * useForward;
+    double useTurnAdj = useTurn * useTurn * useTurn;
 
     //this is the velocity determined by the joystick input. 
     //188 and 198 are close to the robot's max speed.
-    double rightDesiredVelocity = useRightAdj * 188;
-    double leftDesiredVelocity = useLeftAdj * 198;
+    double rightDesiredVelocity = useForwardAdj * 188;
+    double leftDesiredVelocity = useTurnAdj * 198;
 
     //printing stuff to dashboard
     SmartDashboard.putString("DB/String 5", Double.toString(rightDesiredVelocity));
@@ -126,8 +126,9 @@ public class EncoderTeleop extends Command {
     //have basic joystick position power, plus p, i, and side-based correction
     //Robot.driveTrain.makeRightGo(((right) * (right) * (right)) + p1 + rightIntegral + correction);
     //Robot.driveTrain.makeLeftGo(((left) * (left) * (left)) + p2 + leftIntegral - correction);
-    Robot.driveTrain.makeRightGo((useRightAdj)+ p1 + rightIntegral + correction);
-    Robot.driveTrain.makeLeftGo((useLeftAdj) + p2 + leftIntegral - correction);
+    
+    Robot.driveTrain.makeRightGo((useForwardAdj)+ p1 + rightIntegral + correction);
+    Robot.driveTrain.makeLeftGo((useForwardAdj) + p2 + leftIntegral - correction);
   }
 
   // Make this return true when this Command no longer needs to run execute()

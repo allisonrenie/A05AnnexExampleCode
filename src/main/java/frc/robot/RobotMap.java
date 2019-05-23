@@ -23,11 +23,8 @@ public class RobotMap {
   public static int lf1 = 5; //left follower 1
   public static int lf2 = 6; //left follower 2
 
-  //here are our encoders
-  public static int rightEncoder = 1;
-  public static int leftEncoder = 2;
-
   
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;

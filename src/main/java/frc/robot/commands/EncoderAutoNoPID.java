@@ -8,24 +8,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class Calibrator extends Command {
+public class EncoderAutoNoPID extends Command {
 
   private boolean isFinished;
 
-  public Calibrator() {
-    super();
+  public EncoderAutoNoPID() {
     requires(Robot.driveTrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    isFinished = false;
+    this.isFinished = false;
     Robot.driveTrain.rl.setSelectedSensorPosition(0);
+    Robot.driveTrain.ll.setSelectedSensorPosition(0);
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -33,23 +33,13 @@ public class Calibrator extends Command {
   protected void execute() {
 
 
-    //make MOTOR_POWER the power you wish to test
-    Robot.driveTrain.go(Constants.CALI_MOTOR_POWER);
-
-    //printing tested power
-    SmartDashboard.putString("DB/String 1", Double.toString(Constants.CALI_MOTOR_POWER));
-    //printing current velocities
-    SmartDashboard.putString("DB/String 2", Double.toString(Robot.driveTrain.getRightVelocity()));
-    SmartDashboard.putString("DB/String 3", Double.toString(Robot.driveTrain.getLeftVelocity()));
-    //printing differences
-    SmartDashboard.putString("DB/String 4", Double.toString(Constants.CALI_MOTOR_POWER - Robot.driveTrain.getRightVelocity()));
-    SmartDashboard.putString("DB/String 5", Double.toString(Constants.CALI_MOTOR_POWER - Robot.driveTrain.getLeftVelocity()));
+    Robot.driveTrain.go(Constants.ENC_AUTO_MOTOR_POWER);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.driveTrain.rl.getSelectedSensorPosition() < 30){
+    if(Robot.driveTrain.rl.getSelectedSensorPosition() < Constants.ENC_AUTO_ENC_DISTANCE){
       isFinished = false;
     }
     else{
@@ -61,7 +51,6 @@ public class Calibrator extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    //stops both motors at end
     Robot.driveTrain.stop();
   }
 

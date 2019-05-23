@@ -16,7 +16,7 @@ public class Constants {
     //this provides a place to easily change numbers so they are labeled and clear
 
     // ENCODER TELEOP VALUES
-    public static final double DEADBAND = 0.25;
+    public static final double DEADBAND = 0.05;
     public static final double DEADBAND_DIVISION = .96;
     public static final double PROPORTIONAL_CONSTANT = .001;
     public static final double INTEGRAL_CONSTANT = .00075;
@@ -24,6 +24,10 @@ public class Constants {
 
     //CALIBRATOR VALUES
     //change this to test different value's base inaccuracy
-    public static final double MOTOR_POWER = 0.1;
+    public static final double CALI_MOTOR_POWER = 0.1;
+
+    //ENCODER AUTO VALUES
+    public static final double ENC_AUTO_MOTOR_POWER = 0.2;
+    public static final double ENC_AUTO_ENC_DISTANCE = 200;
 
 }

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.EncoderTeleop;
+import frc.robot.commands.EncoderTeleopArcade;
 
 /**
  * Add your docs here.
@@ -72,6 +73,7 @@ public class DriveTrain extends Subsystem {
     ll.set(0);
   }
 
+  //method to make both motors go a power that is sent in
   public void go(double motorPower){
     rl.set(motorPower);
     ll.set(motorPower);
@@ -123,6 +125,6 @@ public class DriveTrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
 
-    setDefaultCommand(new EncoderTeleop());
+    setDefaultCommand(new EncoderTeleopArcade());
   }
 }
