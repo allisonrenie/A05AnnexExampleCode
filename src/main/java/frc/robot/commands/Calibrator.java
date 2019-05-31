@@ -49,7 +49,7 @@ public class Calibrator extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.driveTrain.rl.getSelectedSensorPosition() < 30){
+    if(Robot.driveTrain.rl.getSelectedSensorPosition() < Constants.CALI_ENC_COUNT){
       isFinished = false;
     }
     else{

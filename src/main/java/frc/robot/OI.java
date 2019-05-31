@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.Calibrator;
 import frc.robot.commands.EncoderAuto;
 import frc.robot.commands.EncoderAutoNoPID;
+import frc.robot.commands.TimedDrive;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -35,7 +36,7 @@ public class OI {
 
   public OI(){
 
-    xboxA.whenPressed(new EncoderAutoNoPID());
+  xboxA.whenPressed(new TimedDrive(5));
 
   }
 

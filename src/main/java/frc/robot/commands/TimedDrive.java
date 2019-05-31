@@ -7,33 +7,56 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class TimedDrive extends Command {
-  public TimedDrive() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+
+  Timer time = new Timer();
+  private boolean isFinished;
+  private double driveTime;
+
+  public TimedDrive(double driveTimeInput) {
+    super();
+    requires(Robot.driveTrain);
+    this.driveTime = driveTimeInput;
   }
+
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    time.reset();
+    time.start();
+    isFinished = false;
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
+    Robot.driveTrain.go(0.5);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(time.get() > driveTime){
+      isFinished = true;
+    }
+    else{
+      isFinished = false;
+    }
+    return isFinished;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveTrain.stop();
   }
 
   // Called when another command which requires one or more of the same

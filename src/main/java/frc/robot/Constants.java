@@ -25,8 +25,9 @@ public class Constants {
     //CALIBRATOR VALUES
     //change this to test different value's base inaccuracy
     public static final double CALI_MOTOR_POWER = 0.1;
+    public static final double CALI_ENC_COUNT = 200;
 
-    //ENCODER AUTO VALUES
+    //ENCODER AUTO VALUES/ENCODER AUTO NO PID VALUES
     public static final double ENC_AUTO_MOTOR_POWER = 0.2;
     public static final double ENC_AUTO_ENC_DISTANCE = 200;
 
