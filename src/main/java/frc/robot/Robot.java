@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,9 +30,14 @@ public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
   public static DriveTrain driveTrain = new DriveTrain();
+  public static AHRS ahrs;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  static public AHRS getAHRS() {
+    return ahrs;
+  }
 
   /**
    * This function is run when the robot is first started up and should be
@@ -37,6 +45,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+  ahrs = new AHRS(SerialPort.Port.kUSB1);
+    ahrs.reset();
+
+    //possible solution to the initialization issue
+    //we had an issue with USBs not being plugged in causing our entire robot to not move
+    //this type of code could prevent that from happening by disabling the thing that isn't connected
+    //and letting the robot run
+    // while (ahrs.isCalibrating()) {
+    //   try {
+    //     Thread.sleep(500);
+    //   } catch (InterruptedException e) {
+    //             break;
+    //   }
+    //     }
     m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());

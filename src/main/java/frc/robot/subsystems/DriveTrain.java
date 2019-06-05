@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.EncoderTeleop;
 import frc.robot.commands.EncoderTeleopArcade;
@@ -91,13 +90,11 @@ public class DriveTrain extends Subsystem {
 
   //method to make right side go
   public void makeRightGo(double rightPower){
-    SmartDashboard.putString("DB/String 3", Integer.toString(getRightVelocity())); 
     rl.set(rightPower);
   }
 
   //method to make left side go
   public void makeLeftGo(double leftPower){
-    SmartDashboard.putString("DB/String 4", Integer.toString(getLeftVelocity()));
     ll.set(leftPower);
   }
 

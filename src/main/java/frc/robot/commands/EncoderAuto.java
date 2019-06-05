@@ -19,10 +19,21 @@ public class EncoderAuto extends Command {
   private double correction;
   private boolean isFinished;
 
-  public EncoderAuto() {
+  //to use our passed in values
+  private double distance; //distance in encoder counts
+  private double motorPower;
+ 
+
+  public EncoderAuto(double distance, double motorPower) {
+    //takes distance in encoder counts and motor power from -1 to 1
     //making it require driveTrain
     //means two commands can't use driveTrain at the same time
     requires(Robot.driveTrain);
+
+    //makes the passed in values the same as the ones i created above
+    this.distance = distance;
+    this.motorPower = motorPower;
+  
   }
 
   // Called just before this Command runs the first time
@@ -50,8 +61,8 @@ public class EncoderAuto extends Command {
     and the constant that makes that value into the same scale that the currentVelocity values will
     come in at, which is encoder counts per 100ms
     */
-    double rightDesiredVelocity = Constants.ENC_AUTO_MOTOR_POWER * 188;
-    double leftDesiredVelocity = Constants.ENC_AUTO_MOTOR_POWER * 198;
+    double rightDesiredVelocity = motorPower * 188;
+    double leftDesiredVelocity = motorPower * 198;
 
     //getting our current velocities from the sensors
     double rightCurrentVelocity = Robot.driveTrain.getRightVelocity();
@@ -73,15 +84,15 @@ public class EncoderAuto extends Command {
     correction = (rightError - leftError) * Constants.CORRECTION_CONSTANT;
 
     //giving the robot motor powers using the P, I and correction values as adjusters
-    Robot.driveTrain.makeRightGo((Constants.ENC_AUTO_MOTOR_POWER)+ p1 + rightIntegral + correction);
-    Robot.driveTrain.makeLeftGo((Constants.ENC_AUTO_MOTOR_POWER) + p2 + leftIntegral - correction);
+    Robot.driveTrain.makeRightGo((motorPower)+ p1 + rightIntegral + correction);
+    Robot.driveTrain.makeLeftGo((motorPower) + p2 + leftIntegral - correction);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     //making the command end
-    if(Robot.driveTrain.rl.getSelectedSensorPosition() < Constants.ENC_AUTO_ENC_DISTANCE){
+    if(Robot.driveTrain.rl.getSelectedSensorPosition() < distance){
       //if the robot has gone the requested amount of encoder counts, 
       //the integrals and correction are set to 0 
       //and isFinished is set to true so that end() will run

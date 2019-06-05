@@ -13,6 +13,7 @@ import frc.robot.commands.Calibrator;
 import frc.robot.commands.EncoderAuto;
 import frc.robot.commands.EncoderAutoNoPID;
 import frc.robot.commands.TimedDrive;
+import frc.robot.commands.TurnDegrees;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,6 +38,7 @@ public class OI {
   public OI(){
 
   xboxA.whenPressed(new TimedDrive(5));
+  xboxB.whenPressed(new TurnDegrees(true, 90, 0.2));
 
   }
 
